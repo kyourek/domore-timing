@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-    <PropertyGroup>
-        <Authors>Ken Yourek</Authors>
-        <Copyright>Copyright © Ken Yourek 2020</Copyright>
-        <VersionPrefix></VersionPrefix>
-        <VersionSuffix></VersionSuffix>
-        <AssemblyVersion></AssemblyVersion>
-        <InformationalVersion></InformationalVersion>
-        <FileVersion>0.1.0.0</FileVersion>
-        <PackageVersion></PackageVersion>
-        <PackageProjectUrl>https://github.com/kyourek/domore-timing</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/kyourek/domore-timing.git</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryBranch></RepositoryBranch>
-        <RepositoryCommit></RepositoryCommit>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageTags></PackageTags>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Ken Yourek</Authors>
+    <Copyright>Copyright © Ken Yourek 2020</Copyright>
+    <VersionPrefix>0.1.0.1</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <AssemblyVersion>0.1.0.1</AssemblyVersion>
+    <InformationalVersion>0.1.0.1</InformationalVersion>
+    <FileVersion>0.1.0.1</FileVersion>
+    <PackageVersion>0.1.0.1</PackageVersion>
+    <PackageProjectUrl>https://github.com/kyourek/domore-timing</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kyourek/domore-timing.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>master</RepositoryBranch>
+    <RepositoryCommit>d23e2a6b588e2a41cb2c2f7a19408dd527197f37</RepositoryCommit>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags></PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 </Project>
