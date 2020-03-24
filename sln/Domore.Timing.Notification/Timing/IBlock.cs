@@ -26,7 +26,7 @@ namespace Domore.Timing {
         bool Delaying { get; }
 
         [DispId(5)]
-        bool Canceling { get; }
+        bool Canceling { get; set; }
 
         [DispId(6)]
         void For(TimeSpan time);
