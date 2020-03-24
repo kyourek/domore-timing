@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net40;net45;netcoreapp3.1</TargetFrameworks>
+        <RootNamespace>Domore</RootNamespace>
+        <Description>Do More Timing Notification</Description>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Domore.Notification" Version="0.2.0.3" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Domore.Timing\Domore.Timing.csproj" />
+    </ItemGroup>
+</Project>
