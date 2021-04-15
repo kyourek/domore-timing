@@ -7,7 +7,7 @@
     <VersionSuffix></VersionSuffix>
     <AssemblyVersion>0.2.1.5</AssemblyVersion>
     <InformationalVersion>0.2.1.5</InformationalVersion>
-    <FileVersion>0.2.1.5</FileVersion>
+    <FileVersion>1.0.0.5</FileVersion>
     <PackageVersion>0.2.1.5</PackageVersion>
     <PackageProjectUrl>https://github.com/kyourek/domore-timing</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kyourek/domore-timing.git</RepositoryUrl>

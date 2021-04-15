@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net40;net45;netcoreapp3.1;net5.0</TargetFrameworks>
+        <RootNamespace>Domore</RootNamespace>
+        <Description>Do More Timing Notification Tests</Description>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+      <PackageReference Include="NUnit" Version="3.13.1" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Domore.Timing.Notification\Domore.Timing.Notification.csproj" />
+    </ItemGroup>
+</Project>
