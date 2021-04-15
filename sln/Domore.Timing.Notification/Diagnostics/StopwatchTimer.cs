@@ -14,7 +14,7 @@ namespace Domore.Diagnostics {
 #else
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #endif
-    public class StopwatchTimer : Notifier, IDisposable {
+    public class StopwatchTimer : Notifier, IStopwatch, IDisposable {
         private volatile bool TimerStarted;
         private readonly object TimerLocker = new object();
         private readonly Stopwatch Stopwatch = new Stopwatch();
