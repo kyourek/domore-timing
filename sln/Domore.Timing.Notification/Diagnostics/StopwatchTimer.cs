@@ -27,28 +27,30 @@ namespace Domore.Diagnostics {
         public long ElapsedMilliseconds => Stopwatch.ElapsedMilliseconds;
         public long ElapsedTicks => Stopwatch.ElapsedTicks;
         public bool IsRunning => Stopwatch.IsRunning;
+        public TimeSpan Period { get; set; } = TimeSpan.FromMilliseconds(10);
 
-        public TimeSpan Period {
-            get => _Period;
-            set => _Period = Change(_Period, value, nameof(Period));
+        public IDisposable Notifier() {
+            return new Timer(
+                callback: TimerCallback,
+                state: this,
+                dueTime: TimeSpan.Zero,
+                period: Period);
         }
-        private TimeSpan _Period = TimeSpan.FromMilliseconds(10);
+
+        public void Start() {
+            Stopwatch.Start();
+        }
+
+        public void Stop() {
+            Stopwatch.Stop();
+        }
 
         public void Reset() {
             Stopwatch.Reset();
         }
 
-        public IDisposable Start(TimeSpan? period = null) {
-            Stopwatch.Start();
-            return new Timer(
-                callback: TimerCallback,
-                state: this,
-                dueTime: TimeSpan.Zero,
-                period: period ?? TimeSpan.FromMilliseconds(10));
-        }
-
-        public void Stop() {
-            Stopwatch.Stop();
+        public void Restart() {
+            Stopwatch.Restart();
         }
     }
 }
