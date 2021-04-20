@@ -22,31 +22,36 @@ namespace Domore.Timing {
 
         public IDelay Delay {
             get => _Delay ?? (_Delay = new Delay().Service());
-            set => _Delay = Change(_Delay, value, nameof(Delay));
+            set => Change(ref _Delay, value, nameof(Delay));
         }
         private IDelay _Delay;
 
         public TimeSpan Elapsed {
             get => _Elapsed;
-            private set => _Elapsed = Change(_Elapsed, value, nameof(Elapsed));
+            private set => Change(ref _Elapsed, value, nameof(Elapsed));
         }
         private TimeSpan _Elapsed;
 
         public TimeSpan Remaining {
             get => _Remaining;
-            private set => _Remaining = Change(_Remaining, value, nameof(Remaining));
+            private set => Change(ref _Remaining, value, nameof(Remaining));
         }
         private TimeSpan _Remaining;
 
         public bool Delaying {
             get => _Delaying;
-            private set => _Delaying = Change(_Delaying, value, nameof(Delaying));
+            private set => Change(ref _Delaying, value, nameof(Delaying));
         }
         private bool _Delaying;
 
         public bool Canceling {
             get => _Canceling;
-            set => _Canceling = Change(_Canceling, value, nameof(Canceling));
+            set {
+                if (_Canceling != value) {
+                    _Canceling = value;
+                    NotifyPropertyChanged(nameof(Canceling));
+                }
+            }
         }
         private volatile bool _Canceling;
 

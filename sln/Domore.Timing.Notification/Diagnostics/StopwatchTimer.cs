@@ -29,7 +29,7 @@ namespace Domore.Diagnostics {
         public bool IsRunning => Stopwatch.IsRunning;
         public TimeSpan Period { get; set; } = TimeSpan.FromMilliseconds(10);
 
-        public IDisposable Notifier() {
+        public IDisposable Notify() {
             return new Timer(
                 callback: TimerCallback,
                 state: this,
