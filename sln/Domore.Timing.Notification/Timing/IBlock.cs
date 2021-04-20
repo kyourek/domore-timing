@@ -11,21 +11,18 @@ namespace Domore.Timing {
 #endif
     public interface IBlock {
         [DispId(1)]
-        IDelay Delay { get; set; }
-
-        [DispId(2)]
         TimeSpan Elapsed { get; }
 
-        [DispId(3)]
+        [DispId(2)]
         TimeSpan Remaining { get; }
 
-        [DispId(4)]
+        [DispId(3)]
         bool Delaying { get; }
 
-        [DispId(5)]
+        [DispId(4)]
         bool Canceling { get; set; }
 
-        [DispId(6)]
+        [DispId(5)]
         void For(TimeSpan time);
     }
 }
