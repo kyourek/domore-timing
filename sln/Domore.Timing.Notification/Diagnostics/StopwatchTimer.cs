@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -13,11 +12,10 @@ namespace Domore.Diagnostics {
 #endif
     public class StopwatchTimer : StopwatchAgent, IDisposable {
         private readonly Timer Timer;
-        private readonly static PropertyChangedEventArgs PropertyChangedEventArgs = new PropertyChangedEventArgs(string.Empty);
 
         private static void TimerCallback(object state) {
             var @this = (StopwatchTimer)state;
-            @this.OnPropertyChanged(PropertyChangedEventArgs);
+            @this.NotifyPropertyChanged();
         }
 
         protected virtual void Dispose(bool disposing) {
