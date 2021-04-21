@@ -55,12 +55,12 @@ namespace Domore.Timing {
         }
         private volatile bool _Canceling;
 
-        public void For(TimeSpan time) {
+        public void For(TimeSpan time, Func<bool> cancel = null) {
             var delay = Delay;
             try {
                 Delaying = true;
                 delay.Blocking += Delay_Blocking;
-                delay.For(time);
+                delay.For(time, cancel);
             }
             finally {
                 delay.Blocking -= Delay_Blocking;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Domore.Diagnostics {
@@ -10,7 +9,7 @@ namespace Domore.Diagnostics {
 #else
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
 #endif
-    public interface IStopwatch : INotifyPropertyChanged {
+    public interface IStopwatch {
         [DispId(1)]
         TimeSpan Elapsed { get; }
 

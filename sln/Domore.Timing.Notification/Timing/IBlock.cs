@@ -23,6 +23,6 @@ namespace Domore.Timing {
         bool Canceling { get; set; }
 
         [DispId(5)]
-        void For(TimeSpan time);
+        void For(TimeSpan time, Func<bool> cancel = null);
     }
 }
