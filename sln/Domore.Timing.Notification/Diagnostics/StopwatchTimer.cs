@@ -14,7 +14,8 @@ namespace Domore.Diagnostics {
 #else
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #endif
-    public class StopwatchTimer : Notifier, IStopwatch {
+    public class StopwatchTimer : Notifier, IStopwatch, IDisposable {
+        private readonly Timer Timer;
         private readonly Stopwatch Stopwatch = new Stopwatch();
         private readonly static PropertyChangedEventArgs PropertyChangedEventArgs = new PropertyChangedEventArgs(string.Empty);
 
@@ -23,34 +24,31 @@ namespace Domore.Diagnostics {
             @this.OnPropertyChanged(PropertyChangedEventArgs);
         }
 
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) Timer.Dispose();
+        }
+
+        public TimeSpan Period { get; }
         public TimeSpan Elapsed => Stopwatch.Elapsed;
         public long ElapsedMilliseconds => Stopwatch.ElapsedMilliseconds;
         public long ElapsedTicks => Stopwatch.ElapsedTicks;
         public bool IsRunning => Stopwatch.IsRunning;
-        public TimeSpan Period { get; set; } = TimeSpan.FromMilliseconds(10);
 
-        public IDisposable Notify() {
-            return new Timer(
-                callback: TimerCallback,
-                state: this,
-                dueTime: TimeSpan.Zero,
-                period: Period);
-        }
-
-        public void Start() {
+        public StopwatchTimer(TimeSpan period) {
+            Timer = new Timer(callback: TimerCallback, state: this, dueTime: TimeSpan.Zero, period: Period = period);
             Stopwatch.Start();
         }
 
-        public void Stop() {
-            Stopwatch.Stop();
+        public StopwatchTimer() : this(TimeSpan.FromMilliseconds(10)) {
         }
 
-        public void Reset() {
-            Stopwatch.Reset();
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public void Restart() {
-            Stopwatch.Restart();
+        ~StopwatchTimer() {
+            Dispose(false);
         }
     }
 }
