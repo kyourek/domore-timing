@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Domore.Diagnostics {
-    using Notification;
-
     [Guid("EE7450D4-0770-4536-96B7-04E91F827DFE")]
     [ComVisible(true)]
 #if NETCOREAPP
@@ -14,9 +12,8 @@ namespace Domore.Diagnostics {
 #else
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #endif
-    public class StopwatchTimer : Notifier, IStopwatch, IDisposable {
+    public class StopwatchTimer : StopwatchAgent, IDisposable {
         private readonly Timer Timer;
-        private readonly Stopwatch Stopwatch = new Stopwatch();
         private readonly static PropertyChangedEventArgs PropertyChangedEventArgs = new PropertyChangedEventArgs(string.Empty);
 
         private static void TimerCallback(object state) {
@@ -29,10 +26,6 @@ namespace Domore.Diagnostics {
         }
 
         public TimeSpan Period { get; }
-        public TimeSpan Elapsed => Stopwatch.Elapsed;
-        public long ElapsedMilliseconds => Stopwatch.ElapsedMilliseconds;
-        public long ElapsedTicks => Stopwatch.ElapsedTicks;
-        public bool IsRunning => Stopwatch.IsRunning;
 
         public StopwatchTimer(TimeSpan period) {
             Timer = new Timer(callback: TimerCallback, state: this, dueTime: TimeSpan.Zero, period: Period = period);
