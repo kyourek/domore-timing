@@ -3,17 +3,17 @@
   <PropertyGroup>
     <Authors>Ken Yourek</Authors>
     <Copyright>Copyright © Ken Yourek 2020</Copyright>
-    <VersionPrefix>1.1.0.7</VersionPrefix>
+    <VersionPrefix>1.2.0.8</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <AssemblyVersion>1.1.0.7</AssemblyVersion>
-    <InformationalVersion>1.1.0.7</InformationalVersion>
-    <FileVersion>1.2.0.7</FileVersion>
-    <PackageVersion>1.1.0.7</PackageVersion>
+    <AssemblyVersion>1.2.0.8</AssemblyVersion>
+    <InformationalVersion>1.2.0.8</InformationalVersion>
+    <FileVersion>1.2.0.8</FileVersion>
+    <PackageVersion>1.2.0.8</PackageVersion>
     <PackageProjectUrl>https://github.com/kyourek/domore-timing</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kyourek/domore-timing.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryBranch>master</RepositoryBranch>
-    <RepositoryCommit>342b461a926cb0f3e1addae37531cb81019a3b0c</RepositoryCommit>
+    <RepositoryCommit>c29bceb9f01da028d9eed09c654b4b90f4746d33</RepositoryCommit>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags></PackageTags>
