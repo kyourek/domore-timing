@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -29,7 +28,6 @@ namespace Domore.Diagnostics {
 
         public StopwatchTimer(TimeSpan period) {
             Timer = new Timer(callback: TimerCallback, state: this, dueTime: TimeSpan.Zero, period: Period = period);
-            Stopwatch.Start();
         }
 
         public StopwatchTimer() : this(TimeSpan.FromMilliseconds(10)) {

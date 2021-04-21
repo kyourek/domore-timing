@@ -12,11 +12,21 @@ namespace Domore.Diagnostics {
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #endif
     public class StopwatchAgent : Notifier, IStopwatch {
-        protected Stopwatch Stopwatch { get; } = new Stopwatch();
+        private readonly Stopwatch Stopwatch = new Stopwatch();
 
         public TimeSpan Elapsed => Stopwatch.Elapsed;
         public long ElapsedMilliseconds => Stopwatch.ElapsedMilliseconds;
         public long ElapsedTicks => Stopwatch.ElapsedTicks;
         public bool IsRunning => Stopwatch.IsRunning;
+
+        public void Start() {
+            Stopwatch.Start();
+            NotifyPropertyChanged();
+        }
+
+        public void Stop() {
+            Stopwatch.Stop();
+            NotifyPropertyChanged();
+        }
     }
 }
