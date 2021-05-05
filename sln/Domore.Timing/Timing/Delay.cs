@@ -12,7 +12,7 @@ namespace Domore.Timing {
     public class Delay {
         private static readonly DelayService DelayService = new DelayService();
 
-        public static double For(double milliseconds, CancelMillisecondsDelegate cancel) =>
+        public static double For(double milliseconds, CancelDelegate cancel) =>
             DelayService.For(milliseconds, cancel);
 
         public static double For(double milliseconds, Func<bool> cancel) =>
@@ -24,7 +24,6 @@ namespace Domore.Timing {
         public IDelay Service() =>
             new DelayService();
 
-        public delegate bool CancelTimeSpanDelegate(TimeSpan elapsed, TimeSpan remaining);
-        public delegate bool CancelMillisecondsDelegate(double elapsed, double remaining);
+        public delegate bool CancelDelegate(IDelaying delaying);
     }
 }

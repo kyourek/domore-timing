@@ -20,9 +20,24 @@ namespace Domore.Timing {
         bool Delaying { get; }
 
         [DispId(4)]
-        bool Canceling { get; set; }
+        bool Canceling { get; }
 
         [DispId(5)]
-        void For(TimeSpan time, Func<bool> cancel = null);
+        bool Determinate { get; }
+
+        [DispId(6)]
+        void Cancel();
+
+        [DispId(7)]
+        void For(TimeSpan time);
+
+        [ComVisible(false)]
+        void For(TimeSpan time, Func<bool> cancel);
+
+        [ComVisible(false)]
+        void Until(Func<bool> predicate, TimeSpan timeout, Func<bool> cancel);
+
+        [ComVisible(false)]
+        void Until(Func<bool> predicate, TimeSpan timeout);
     }
 }

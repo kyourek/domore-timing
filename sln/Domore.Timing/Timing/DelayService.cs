@@ -8,20 +8,28 @@ namespace Domore.Timing {
         private static readonly TimeSpan OneMillisecond = TimeSpan.FromMilliseconds(1);
         private static readonly TimeSpan TenMilliseconds = TimeSpan.FromMilliseconds(10);
 
-        private bool CancelDelay(TimeSpan elapsed, TimeSpan remaining, Delay.CancelTimeSpanDelegate cancel) {
-            if (cancel?.Invoke(elapsed, remaining) ?? false) {
-                return true;
-            }
-
-            var e = new DelayEventArgs(elapsed, remaining);
-            OnBlocking(e);
-            return e.Cancel;
-        }
-
         private int? SleepTime(TimeSpan remaining) {
             if (remaining < OneMillisecond) return 0;
             if (remaining < TenMilliseconds) return 1;
             return 10;
+        }
+
+        private bool Canceling(TimeSpan elapsed, TimeSpan? remaining, Delay.CancelDelegate cancel) {
+            var e = new DelayEventArgs(elapsed, remaining);
+            if (cancel?.Invoke(e) == true) return true;
+
+            OnBlocking(e);
+            return e.Cancel;
+        }
+
+        private TimeSpan CallComplete(TimeSpan elapsed) {
+            OnComplete(new DelayEventArgs(elapsed, TimeSpan.Zero));
+            return elapsed;
+        }
+
+        private Stopwatch CallStarting(TimeSpan? remaining) {
+            OnStarting(new DelayEventArgs(TimeSpan.Zero, remaining));
+            return Stopwatch.StartNew();
         }
 
         protected virtual void OnStarting(DelayEventArgs e) =>
@@ -44,49 +52,72 @@ namespace Domore.Timing {
         private SleepService _Sleep;
 
         public TimeSpan For(TimeSpan time) =>
-            For(time, default(Delay.CancelTimeSpanDelegate));
+            For(time, default(Delay.CancelDelegate));
 
         public double For(double milliseconds) =>
-            For(milliseconds, default(Delay.CancelMillisecondsDelegate));
+            For(milliseconds, default(Delay.CancelDelegate));
 
         public TimeSpan For(TimeSpan time, Func<bool> cancel) =>
-            For(time, (_, __) => cancel?.Invoke() ?? false);
+            For(time, _ => cancel?.Invoke() ?? false);
 
         public double For(double milliseconds, Func<bool> cancel) =>
-            For(milliseconds, (_, __) => cancel?.Invoke() ?? false);
+            For(milliseconds, _ => cancel?.Invoke() ?? false);
 
-        public TimeSpan For(TimeSpan time, Delay.CancelTimeSpanDelegate cancel) {
+        public TimeSpan For(TimeSpan time, Delay.CancelDelegate cancel) {
             if (time <= TimeSpan.Zero) return TimeSpan.Zero;
 
-            OnStarting(new DelayEventArgs(TimeSpan.Zero, time));
+            var sw = CallStarting(time);
+            for (; ; ) {
+                var elapsed = sw.Elapsed;
+                if (elapsed >= time) return CallComplete(elapsed);
 
-            var sw = Stopwatch.StartNew();
-            var elapsed = sw.Elapsed;
-            while (elapsed < time) {
                 var remaining = time - elapsed;
                 if (remaining > OneMillisecond) {
-                    if (CancelDelay(elapsed, remaining, cancel)) {
-                        break;
-                    }
+                    var canceling = Canceling(elapsed, remaining, cancel);
+                    if (canceling) return CallComplete(elapsed);
 
                     var sleepTime = SleepTime(remaining);
-                    if (sleepTime.HasValue) {
-                        Sleep.For(sleepTime.Value);
-                    }
+                    if (sleepTime.HasValue) Sleep.For(sleepTime.Value);
                 }
-
-                elapsed = sw.Elapsed;
             }
-
-            OnComplete(new DelayEventArgs(elapsed, TimeSpan.Zero));
-
-            return elapsed;
         }
 
-        public double For(double milliseconds, Delay.CancelMillisecondsDelegate cancel) =>
-            For(TimeSpan.FromMilliseconds(milliseconds), cancel == null
-                ? default(Delay.CancelTimeSpanDelegate)
-                : (elapsed, remaining) => cancel(elapsed.TotalMilliseconds, remaining.TotalMilliseconds)
-            ).TotalMilliseconds;
+        public double For(double milliseconds, Delay.CancelDelegate cancel) {
+            return For(TimeSpan.FromMilliseconds(milliseconds), cancel).TotalMilliseconds;
+        }
+
+        public TimeSpan Until(Func<bool> predicate, TimeSpan timeout, Delay.CancelDelegate cancel) {
+            if (null == predicate) throw new ArgumentNullException(nameof(predicate));
+            if (true == predicate()) return TimeSpan.Zero;
+
+            var sw = CallStarting(null);
+            for (; ; ) {
+                var elapsed = sw.Elapsed;
+                if (elapsed > timeout) {
+                    throw new DelayTimeoutException();
+                }
+                var complete = predicate() || Canceling(elapsed, null, cancel);
+                if (complete) {
+                    return CallComplete(elapsed);
+                }
+                Sleep.For(0);
+            }
+        }
+
+        public TimeSpan Until(Func<bool> predicate, TimeSpan timeout, Func<bool> cancel) =>
+            Until(predicate, timeout, _ => cancel?.Invoke() ?? false);
+
+        public TimeSpan Until(Func<bool> predicate, TimeSpan timeout) =>
+            Until(predicate, timeout, default(Delay.CancelDelegate));
+
+        public double Until(Func<bool> predicate, int millisecondsTimeout, Delay.CancelDelegate cancel) {
+            return Until(predicate, TimeSpan.FromMilliseconds(millisecondsTimeout), cancel).TotalMilliseconds;
+        }
+
+        public double Until(Func<bool> predicate, int millisecondsTimeout, Func<bool> cancel) =>
+            Until(predicate, millisecondsTimeout, _ => cancel?.Invoke() ?? false);
+
+        public double Until(Func<bool> predicate, int millisecondsTimeout) =>
+            Until(predicate, millisecondsTimeout, default(Delay.CancelDelegate));
     }
 }

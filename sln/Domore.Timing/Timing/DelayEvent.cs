@@ -13,14 +13,27 @@ namespace Domore.Timing {
 #else
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
 #endif
-    public class DelayEventArgs : EventArgs {
+    public class DelayEventArgs : EventArgs, IDelaying {
         public TimeSpan Elapsed { get; }
         public TimeSpan Remaining { get; }
         public bool Cancel { get; set; }
+        public bool Determinate { get; }
 
-        public DelayEventArgs(TimeSpan elapsed, TimeSpan remaining) {
+        public DelayEventArgs(TimeSpan elapsed, TimeSpan? remaining) {
             Elapsed = elapsed;
-            Remaining = remaining;
+            Remaining = remaining ?? TimeSpan.Zero;
+            Determinate = remaining.HasValue;
         }
+
+        public DelayEventArgs(TimeSpan elapsed, TimeSpan remaining) : this(elapsed, new TimeSpan?(remaining)) {
+        }
+
+        public DelayEventArgs(TimeSpan elapsed) : this(elapsed, new TimeSpan?()) {
+        }
+
+        double IDelaying.ElapsedMilliseconds => Elapsed.TotalMilliseconds;
+        double IDelaying.RemainingMilliseconds => Remaining.TotalMilliseconds;
+        TimeSpan IDelaying.ElapsedTime => Elapsed;
+        TimeSpan IDelaying.RemainingTime => Remaining;
     }
 }
